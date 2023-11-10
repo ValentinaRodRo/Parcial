@@ -75,46 +75,21 @@ const productos = {
 // CAPTURA EL TEMPLATE DE LOS PRODUCTOS
 const templateProd = document.getElementById('template-prod').content
 const contenedorProd = document.querySelector('.contenedor-productos')
+const formulario = document.getElementById('datosCompradorForm');
 const fragment = document.createDocumentFragment()
 
-// Función para cargar y mostrar los platos disponibles desde la API
-function cargarPlatosDisponibles() {
-  fetch('http://localhost:8000/api/products')
-    .then(response => response.json())
-    .then(data => {
-      mostrarPlatos(data);
-    })
-    .catch(error => {
-      console.error('Error al cargar los platos:', error);
-    });
-}
 
 // AGREGAR LOS PRODUCTOS AL DOM
-function mostrarPlatos(platos) {
-  platos.forEach(plato => {
-    const clone = templateProd.cloneNode(true);
-    clone.querySelector('.div-info .nombre-prod').textContent = plato.name;
-    clone.querySelector('.div-precio-boton .precio').textContent = `$${plato.price}`;
-    clone.querySelector('.div-info .descripcion-prod').textContent = plato.description;
-    clone.querySelector('.contenedor-img img').setAttribute('src', plato.image);
-    
-  
-    const agregarBoton = clone.querySelector('.boton');
-    agregarBoton.addEventListener('click', () => {
-      
-    });
-
-
-    fragment.appendChild(clone);
-  });
-
-
-contenedorProd.appendChild(fragment);
-}
-// Llama a la función para cargar y mostrar los platos disponibles cuando se cargue la página
-window.addEventListener('load', () => {
-  cargarPlatosDisponibles();
-});
+Object.values(productos).forEach( producto => {
+  templateProd.querySelector('.div-info .nombre-prod').textContent = producto.nombre
+  templateProd.querySelector('.div-precio-boton .precio').textContent = producto.precio
+  templateProd.querySelector('.div-info .descripcion-prod').textContent = producto.descripcion
+  templateProd.querySelector('.contenedor-img img').setAttribute('alt', producto.nombre)
+  templateProd.querySelector('.contenedor-img img').setAttribute('src', producto.srcImg)
+  const clone = templateProd.cloneNode(true)
+  fragment.appendChild(clone)
+})
+contenedorProd.appendChild(fragment)
 
 // CARRITO DE COMPRA
 let carrito = {}
@@ -146,66 +121,84 @@ const setCarrito = e => {
 }
 
 const pintarTabla = objetoCarrito => {
-  Object.values(objetoCarrito).forEach(objeto => {
-    const cloneTabla = templateTabla.cloneNode(true);
-    cloneTabla.getElementById('producto').textContent = objeto.nombre;
-    cloneTabla.getElementById('cant').textContent = objeto.cantidad;
-    cloneTabla.getElementById('precio-uni').textContent = objeto.precio;
-    
-    // Elimina el símbolo "$" y convierte el precio en un número
-    const precioNumerico = parseFloat(objeto.precio.replace('$', ''));
-    
-    if (!isNaN(precioNumerico)) {
-      let precioTotal = precioNumerico * objeto.cantidad;
-      cloneTabla.getElementById('precio-total-prod').textContent = '$' + precioTotal.toFixed(2);
-    } else {
-      // Manejo de error si el precio no es un número válido
-      cloneTabla.getElementById('precio-total-prod').textContent = 'Precio inválido';
+  Object.values(objetoCarrito).forEach( objeto => {
+    const cloneTabla = templateTabla.cloneNode(true)
+    cloneTabla.getElementById('producto').textContent = objeto.nombre
+    cloneTabla.getElementById('cant').textContent = objeto.cantidad
+    cloneTabla.getElementById('precio-uni').textContent = objeto.precio
+    let precioTotal = objeto.precio * objeto.cantidad
+    cloneTabla.getElementById('precio-total-prod').textContent = precioTotal.toFixed(2)
+    fragmentTabla.appendChild(cloneTabla)
+  })
+  tbodyCarrito.innerHTML = ''
+  tbodyCarrito.appendChild(fragmentTabla)
+  pintarFooter()
+}
+const pintarFooter = () => {
+  tfootCarrito.innerHTML = ''
+  if(Object.keys(carrito).length === 0) {
+    tfootCarrito.innerHTML = '<tr><td colspan = 4>¡No hay ningun elemento en el carrito!</td></tr>'
+  } else {
+    const total = Object.values(carrito).reduce((acc, {cantidad, precio}) => acc + (cantidad * precio),0)
+    templateFoot.getElementById('total-a-pagar').textContent = total.toFixed(2)
+    const cloneFoot = templateFoot.cloneNode(true)
+    fragment.appendChild(cloneFoot)
+    tfootCarrito.appendChild(fragment)
+    //Boton Vaciar carrito
+    const botonVaciar = document.getElementById('vaciar-tabla')
+botonVaciar.addEventListener('click', () => {
+      carrito = {}
+      pintarTabla(carrito)
+      pintarFooter()
+    })
+    //Boton Comprar carrito
+   formulario.addEventListener('submit', function (event) {
+    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+
+    // Recopila los datos del comprador
+    const nombre = document.getElementById('nombre').value;
+    const email = document.getElementById('email').value;
+
+    // Crea un objeto que representa el pedido
+    const pedido = {
+        nombre: nombre,
+        correo: email,
+        productos: [], // Aquí debes agregar los productos seleccionados y sus cantidades
+    };
+
+    // Recorre los elementos del carrito y agrega los productos al pedido
+    for (const [nombreProducto, producto] of Object.entries(carrito)) {
+        const productoPedido = {
+            id: nombreProducto,
+            cantidad: producto.cantidad,
+        };
+        pedido.productos.push(productoPedido);
     }
 
-    fragmentTabla.appendChild(cloneTabla);
-  });
-
-  tbodyCarrito.innerHTML = '';
-  tbodyCarrito.appendChild(fragmentTabla);
-  pintarFooter();
-};
-
-const pintarFooter = () => {
-  tfootCarrito.innerHTML = '';
-
-  if (Object.keys(carrito).length === 0) {
-    tfootCarrito.innerHTML = '<tr><td colspan="4">¡No hay ningún elemento en el carrito!</td></tr>';
-  } else {
-    let total = 0;
-
-    Object.values(carrito).forEach(({ cantidad, precio }) => {
-      const precioNumerico = parseFloat(precio.replace('$', ''));
-
-      if (!isNaN(precioNumerico)) {
-        total += cantidad * precioNumerico;
-      }
-    });
-
-    templateFoot.querySelector('.precio-tabla.border-bottom-right.negrita').textContent = '$' + total.toFixed(2);
-    const cloneFoot = templateFoot.cloneNode(true);
-    fragmentTabla.appendChild(cloneFoot);
-
-    tfootCarrito.appendChild(fragmentTabla);
-
-    // Boton Vaciar carrito
-    const botonVaciar = document.getElementById('vaciar-tabla');
-    botonVaciar.addEventListener('click', () => {
-      carrito = {};
-      pintarTabla(carrito);
-      pintarFooter();
-    });
-    //Boton Comprar carrito
-    const botonComprar = document.getElementById('comprar')
-botonComprar.addEventListener('click', () => {
-    localStorage.setItem('carrito', JSON.stringify(carrito))
-       window.location.href = 'FormularioClienteCompra.html';
+    // Envia el objeto 'pedido' al backend a través de una solicitud HTTP POST
+    fetch('/api/pedido', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(pedido),
     })
+        .then((response) => {
+            if (response.ok) {
+                // El pedido se ha enviado con éxito
+                alert('Pedido enviado con éxito');
+                carrito = {}; // Vacía el carrito después de enviar el pedido
+                pintarTabla(carrito);
+                pintarFooter();
+            } else {
+                // Hubo un error en la solicitud, maneja el error según sea necesario
+                alert('Error al enviar el pedido');
+            }
+        })
+        .catch((error) => {
+            console.error('Error al enviar el pedido:', error);
+        });
+});
     
 //BOTONES CANTIDADES DEL CARRITO
     
@@ -240,18 +233,4 @@ const aumentarDisminuir = boton => {
   pintarTabla(carrito)
   pintarFooter()
 }
-function cargarPlatosDisponibles() {
-  // Realiza una solicitud GET a la API
-  fetch('http://localhost:8000/api/products')
-    .then(response => response.json())
-    .then(data => {
-      // Llama a una función para mostrar los platos en la página
-      mostrarPlatos(data);
-    })
-    .catch(error => {
-      console.error('Error al cargar los platos:', error);
-    });
-}
-
-
 
