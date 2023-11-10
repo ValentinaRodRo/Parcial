@@ -1,0 +1,87 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+
+    <link rel="stylesheet" href="FormularioClienteCompra_css.css">
+    
+</head>
+<body>
+  <h1>MENU MEXICAN</h1>
+<h2>DATOS CLIENTES</h2>
+  <form id="FormularioCliente" action="{{ route('orders.store') }}" method="POST">
+    
+    <div>
+      <label for="nombre">
+        Nombre:</label>
+      <input type="text" id="nombre" name="nombre" required>
+    </div>
+    <div>
+      <label for="email">
+        Email:</label>
+      <input type="text" id="email" name="email" required>
+    </div>
+    <div>
+      <label for="telefono">
+        Telefono:</label>
+      <input type="text" id="telefono" name="telefono" required>
+    </div>
+  <div>
+      <label for="direccion">
+        Direccion:</label>
+      <input type="text" id="direccion" name="direccion" required>
+    </div>
+    <div>
+      <label for="id">
+        Cedula:</label>
+      <input type="text" id="id" name="id" required>
+    </div>
+    <div class="tabla-calculo" id="tabla-calculo">
+    <table class="tabla">
+      <caption class="titulo-tabla">Tus Productos</caption>
+      <thead class="cabecera border-top-right">
+        <tr>
+          <th class="border-top-left">Nombre Producto</th>
+          <th>Cantidad</th>
+          <th>Precio Unidad</th>
+          <th class="border-top-right">Precio Total</th>
+        </tr>
+      </thead>
+      <tbody id="carrito-body">
+  
+      </tbody>
+      <tfoot id="footer">
+        <tr><td class="border-bottom-left negrita">Precio Total</td>
+    <td class="border-bottom-right"><span id="total-a-pagar" class="precio-tabla negrita">0.00</span></td></tr>
+      </tfoot>
+    </table>
+  </div>
+  <!-- TEMPLATE FILAS -->
+  <template id="agregar-producto-al-carro">
+    <tr>
+          <td id="producto">Flautas Mixtas</td>
+          <td><button id="menos-cantidad" class="button">-</button><span id="cant">1</span><button id='mas-cantidad' class="button">+</button></td>
+          <td class="precio-tabla" id="precio-uni">23600</td>
+          <td class="precio-tabla" id="precio-total-prod">23600</td>
+        </tr>
+  </template>
+  <!-- TEMPLATE FOOTER TABLA -->
+  <template id="tfooter">
+    <tr>
+    <td class="negrita">Precio Total</td>
+    <td><span id="total-a-pagar" class="precio-tabla border-bottom-right negrita">0.00</span></td>
+  </tr>
+  </template>
+ 
+    
+  </div>
+    <div>
+      <button type="submit">Enviar
+      </button>
+    </div>
+    
+     <script src="./FormularioClienteCompra_JS.js"></script>
+</body>
+</html>
