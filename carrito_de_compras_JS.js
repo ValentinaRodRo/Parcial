@@ -152,8 +152,11 @@ const pintarFooter = () => {
       pintarFooter()
     })
     //Boton Comprar carrito
-    formulario.addEventListener('submit', function (event) {
-      event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+    const botonComprar = document.getElementById('comprar')
+    botonComprar.addEventListener('click', () => {
+    localStorage.setItem('carrito', JSON.stringify(carrito))
+       window.location.href = 'FormularioClienteCompra.html';
+    })
 
       // Recopila los datos del comprador
       const nombre = document.getElementById('nombre').value;
@@ -198,12 +201,12 @@ const pintarFooter = () => {
         .catch((error) => {
           console.error('Error al enviar el pedido:', error);
         });
-    });
+    };
 
     //BOTONES CANTIDADES DEL CARRITO
 
   }
-}
+
 tbodyCarrito.addEventListener('click', e => {
 
   if (e.target.classList.contains('button')) {
