@@ -75,12 +75,12 @@ const productos = {
 // CAPTURA EL TEMPLATE DE LOS PRODUCTOS
 const templateProd = document.getElementById('template-prod').content
 const contenedorProd = document.querySelector('.contenedor-productos')
-const formulario = document.getElementById('datosCompradorForm');
+const Formulario = document.getElementById('datosCompradorForm');
 const fragment = document.createDocumentFragment()
 
 
 // AGREGAR LOS PRODUCTOS AL DOM
-Object.values(productos).forEach( producto => {
+Object.values(productos).forEach(producto => {
   templateProd.querySelector('.div-info .nombre-prod').textContent = producto.nombre
   templateProd.querySelector('.div-precio-boton .precio').textContent = producto.precio
   templateProd.querySelector('.div-info .descripcion-prod').textContent = producto.descripcion
@@ -100,8 +100,8 @@ const templateFoot = document.getElementById('tfooter').content
 const tfootCarrito = document.getElementById('footer')
 
 contenedorProd.addEventListener('click', e => {
-  
-  if(e.target.textContent === "Agregar") {
+
+  if (e.target.textContent === "Agregar") {
     setCarrito(e.target.parentElement.parentElement)
   }
   e.stopPropagation();
@@ -112,16 +112,16 @@ const setCarrito = e => {
     precio: e.querySelector('.div-precio-boton .precio').textContent,
     cantidad: 1
   }
-  if(carrito.hasOwnProperty(pivoteCarrito.nombre)){
+  if (carrito.hasOwnProperty(pivoteCarrito.nombre)) {
     carrito[pivoteCarrito.nombre].cantidad += 1
   } else {
-    carrito[pivoteCarrito.nombre] = {...pivoteCarrito}
+    carrito[pivoteCarrito.nombre] = { ...pivoteCarrito }
   }
   pintarTabla(carrito)
 }
 
 const pintarTabla = objetoCarrito => {
-  Object.values(objetoCarrito).forEach( objeto => {
+  Object.values(objetoCarrito).forEach(objeto => {
     const cloneTabla = templateTabla.cloneNode(true)
     cloneTabla.getElementById('producto').textContent = objeto.nombre
     cloneTabla.getElementById('cant').textContent = objeto.cantidad
@@ -136,95 +136,95 @@ const pintarTabla = objetoCarrito => {
 }
 const pintarFooter = () => {
   tfootCarrito.innerHTML = ''
-  if(Object.keys(carrito).length === 0) {
+  if (Object.keys(carrito).length === 0) {
     tfootCarrito.innerHTML = '<tr><td colspan = 4>¡No hay ningun elemento en el carrito!</td></tr>'
   } else {
-    const total = Object.values(carrito).reduce((acc, {cantidad, precio}) => acc + (cantidad * precio),0)
+    const total = Object.values(carrito).reduce((acc, { cantidad, precio }) => acc + (cantidad * precio), 0)
     templateFoot.getElementById('total-a-pagar').textContent = total.toFixed(2)
     const cloneFoot = templateFoot.cloneNode(true)
     fragment.appendChild(cloneFoot)
     tfootCarrito.appendChild(fragment)
     //Boton Vaciar carrito
     const botonVaciar = document.getElementById('vaciar-tabla')
-botonVaciar.addEventListener('click', () => {
+    botonVaciar.addEventListener('click', () => {
       carrito = {}
       pintarTabla(carrito)
       pintarFooter()
     })
     //Boton Comprar carrito
-   formulario.addEventListener('submit', function (event) {
-    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+    formulario.addEventListener('submit', function (event) {
+      event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
 
-    // Recopila los datos del comprador
-    const nombre = document.getElementById('nombre').value;
-    const email = document.getElementById('email').value;
+      // Recopila los datos del comprador
+      const nombre = document.getElementById('nombre').value;
+      const email = document.getElementById('email').value;
 
-    // Crea un objeto que representa el pedido
-    const pedido = {
+      // Crea un objeto que representa el pedido
+      const pedido = {
         nombre: nombre,
         correo: email,
         productos: [], // Aquí debes agregar los productos seleccionados y sus cantidades
-    };
+      };
 
-    // Recorre los elementos del carrito y agrega los productos al pedido
-    for (const [nombreProducto, producto] of Object.entries(carrito)) {
+      // Recorre los elementos del carrito y agrega los productos al pedido
+      for (const [nombreProducto, producto] of Object.entries(carrito)) {
         const productoPedido = {
-            id: nombreProducto,
-            cantidad: producto.cantidad,
+          id: nombreProducto,
+          cantidad: producto.cantidad,
         };
         pedido.productos.push(productoPedido);
-    }
+      }
 
-    // Envia el objeto 'pedido' al backend a través de una solicitud HTTP POST
-    fetch('/api/pedido', {
+      // Envia el objeto 'pedido' al backend a través de una solicitud HTTP POST
+      fetch('/api/pedido', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(pedido),
-    })
+      })
         .then((response) => {
-            if (response.ok) {
-                // El pedido se ha enviado con éxito
-                alert('Pedido enviado con éxito');
-                carrito = {}; // Vacía el carrito después de enviar el pedido
-                pintarTabla(carrito);
-                pintarFooter();
-            } else {
-                // Hubo un error en la solicitud, maneja el error según sea necesario
-                alert('Error al enviar el pedido');
-            }
+          if (response.ok) {
+            // El pedido se ha enviado con éxito
+            alert('Pedido enviado con éxito');
+            carrito = {}; // Vacía el carrito después de enviar el pedido
+            pintarTabla(carrito);
+            pintarFooter();
+          } else {
+            // Hubo un error en la solicitud, maneja el error según sea necesario
+            alert('Error al enviar el pedido');
+          }
         })
         .catch((error) => {
-            console.error('Error al enviar el pedido:', error);
+          console.error('Error al enviar el pedido:', error);
         });
-});
-    
-//BOTONES CANTIDADES DEL CARRITO
-    
+    });
+
+    //BOTONES CANTIDADES DEL CARRITO
+
   }
 }
 tbodyCarrito.addEventListener('click', e => {
-  
-  if(e.target.classList.contains('button')) {
+
+  if (e.target.classList.contains('button')) {
     aumentarDisminuir(e.target)
   }
 })
 const aumentarDisminuir = boton => {
-  if(boton.textContent === '+'){
+  if (boton.textContent === '+') {
     const indicador = boton.parentElement.parentElement.firstElementChild.textContent
-    Object.values(carrito).forEach( elemento => {
-      if(elemento.nombre === indicador) {
-      carrito[elemento.nombre].cantidad++  
+    Object.values(carrito).forEach(elemento => {
+      if (elemento.nombre === indicador) {
+        carrito[elemento.nombre].cantidad++
       }
     })
   }
-  if(boton.textContent === '-') {
+  if (boton.textContent === '-') {
     const indicador = boton.parentElement.parentElement.firstElementChild.textContent
-    Object.values(carrito).forEach( elemento => {
-      if(elemento.nombre === indicador) {
-      carrito[elemento.nombre].cantidad--
-        if(carrito[elemento.nombre].cantidad === 0) {
+    Object.values(carrito).forEach(elemento => {
+      if (elemento.nombre === indicador) {
+        carrito[elemento.nombre].cantidad--
+        if (carrito[elemento.nombre].cantidad === 0) {
           delete carrito[elemento.nombre]
         }
       }
@@ -233,4 +233,3 @@ const aumentarDisminuir = boton => {
   pintarTabla(carrito)
   pintarFooter()
 }
-
