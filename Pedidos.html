@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel=stylesheet href="estilofo.css">
+  <link rel=stylesheet href="domicilio.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+  <link href="domicilio.css" rel="stylesheet"
+    integrity="domicilio.css" crossorigin="anonymous">
+  <title>Menu</title>
+</head>
+
+<body>
+	<header>
+		<button class="LogOut">Cerrar Sesion</button>	</header>
+	<main>
+
+	  <div class="container">
+		  <h1>Pedidos</h1>
+		  <hr>
+		  <div class="row" id="items"></div>
+	  </div>
+	  
+	  <template id="template-card">
+		<div class="col-12 mb-2 col-md-4">
+		  <div class="card">
+			  <h2>estados</h2>
+			  <h5>Titulo</h5>
+              <h4>cantidad</h4>
+			  <p>precio</p>
+			  <button class="btn btn-dark">Actualizar</button>
+			</div>
+		</div>
+	  </template>
+	  
+	  
+	</main>
+	  <script src="Pedidos.js"></script>
+	</body>
+
+</html>

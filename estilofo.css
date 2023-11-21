@@ -1,0 +1,114 @@
+#logo img {
+      width: 40%;
+}
+
+body {
+      /*background-image: url(meson.png);*/
+      background-color: #A2CF9C;
+      background-repeat: no-repeat;
+      background-position: top;
+      background-size: cover;
+}
+
+.LogOut {
+      background-color: red;
+      color: #ffffff; /* Color del texto */
+      padding: 10px 20px; /* Ajusta el relleno (padding) según sea necesario */
+      font-size: 16px; /* Tamaño del texto */
+      border: none; /* Sin borde */
+      border-radius: 5px; /* Esquinas redondeadas */
+      cursor: pointer;
+      transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+      border-color: black;
+      margin-left: 40px;
+  }
+  
+  .LogOut:hover {
+      background-color: #7FA37A; /* Cambia el color de fondo al pasar el mouse sobre el botón */
+}
+
+header a {
+      text-decoration: none;
+      color: black;
+}
+
+.container {
+      max-width: 450px;
+      height: auto;
+      background-color: #EFEFEF;
+      margin: 5% auto;
+      padding-bottom: 1rem;
+
+}
+
+.form__top {
+      width: 100%;
+      text-align: center;
+      padding: 2rem 0 1rem;
+      border-top: solid .4rem #F39B53;
+      margin-bottom: 1rem;
+}
+
+.form__top h2 {
+      font-weight: bold;
+      color: #CAC8C8;
+      font-size: 18px;
+}
+
+h2 span {
+      color: #F39B53;
+}
+
+.form__reg {
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+}
+
+.btn__form {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 1rem;
+}
+
+.input,
+.btn__submit,
+.btn__reset {
+      background-color: #EFEFEF;
+      padding: .5rem;
+      margin: .5rem 0;
+      border: none;
+      border-bottom: solid #C8C8C8 .2rem;
+      transition: all .5s;
+}
+.input{
+  transform: translateY(20px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.input:focus {
+      border-bottom: solid #F39B53 .2rem;
+      opacity: 1;
+        transform: translateY(0);
+}
+
+.btn__submit,
+.btn__reset {
+      border-radius: 15rem;
+      width: 40%;
+      border-bottom: none;
+      background-color: #31B1E5;
+      color: white;
+}
+
+.btn__reset {
+      background-color: #EDA135;
+}
+
+@media (max-width: 600px) {
+      main {
+        margin-top: 18rem;
+      }
+    
+    
+    }

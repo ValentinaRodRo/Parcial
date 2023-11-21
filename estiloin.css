@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+
+#logo {
+  margin: auto;
+  height: 9rem;
+  width: 320px;
+  text-align: center;
+
+}
+
+#logo img {
+  width: 30%;
+  margin-top: 1rem;
+  margin-bottom: -1rem;
+}
+
+#logo h1 {
+  font-family: 'Pacifico', cursive;
+  font-size: 2rem;
+  border: 0;
+}
+
+nav {
+  margin-top: 1rem;
+  height: 3rem;
+  background-color: #17181C;
+  text-align: center;
+}
+
+
+nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: black;
+  
+}
+@media (max-width: 600px) {
+  nav ul {
+    flex-direction: column;
+    
+  }
+}
+
+nav ul li {
+  margin: 1rem;
+}
+
+nav ul li a {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 1rem 2rem;
+}
+
+nav ul li a:hover {
+  background-color: #737991;
+}
+main{
+  height: 100vh;
+}
+#principal {
+  background-image: url(Logo_de_la_Universidad_de_La_Sabana.svg);
+  background-repeat: no-repeat;
+  background-position: top;
+  margin-top: 2rem;
+}
