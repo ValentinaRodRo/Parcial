@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Agrega un evento de clic al botón
     botonCerrarSesion.addEventListener("click", function() {
         // Redirige a la página "forcontacto"
-        window.location.href = "forcontacto.html";
-    });
+        window.location.href = "forcontacto.html";});
 });
 
 

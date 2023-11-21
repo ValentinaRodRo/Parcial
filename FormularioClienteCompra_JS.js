@@ -58,7 +58,7 @@ const pedido = {
 };
 
 // Envía el pedido 
-fetch('https://restaurante-vrr-pnt20232-unisabana.onrender.com/api/orders', {
+fetch('http://127.0.0.1:8000/api/orders', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
